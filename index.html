@@ -1,0 +1,43 @@
+<ul id = "myList"></ul>
+
+
+<div style="display: none;" id="template_person">
+    <li>
+        <label>name:</label><span>[name]</span>
+        <label>age:</label><span>[age]</span>
+        <label>id:</label><span>[id]</span>
+    </li>
+</div>
+
+<script>
+    let persons = [
+        {name: 'moshe', age: 23, id: 123},
+        {name: 'david', age: 32, id: 234},
+        {name: 'haim', age: 41, id: 543},
+        {name: 'meir', age: 44, id: 654},
+        {name: 'alex', age: 51, id: 521}
+    ]
+    function render(template,dataArr) {
+        let h = ''
+        let r = /\[(.*?)]/g;
+        let propertiesInTemplate = template.match(r) 
+        for (let index = 0; index < propertiesInTemplate.length; index++) {
+            let p = propertiesInTemplate[index];
+            p = p.replace('[','').replace(']','')
+            console.log(p);
+            propertiesInTemplate[index] = p
+        }
+        dataArr.forEach(item => {
+            let itemHtml = template
+            propertiesInTemplate.forEach(p => {
+                let propValue = item[p]
+                itemHtml = itemHtml.replace(`[${p}]`,propValue)
+            });
+            h+=itemHtml
+        });
+        return h
+    }
+    let myTemplate = document.getElementById('template_person')
+    let myList = document.getElementById('myList')
+    myList.innerHTML = render(myTemplate.innerHTML,persons)
+</script>
